@@ -1,0 +1,2 @@
+lark>=1.2.2
+langchain-ollama>=0.1.1

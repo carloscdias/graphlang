@@ -1,0 +1,80 @@
+start: stmt_list
+
+stmt_list: [line_stmt _SEP stmt_list]
+          | [block_stmt stmt_list]
+
+?line_stmt: attr_stmt
+          | with_attr_stmt
+          | start_stmt
+
+?block_stmt: only_attr_stmt
+           | graph_stmt
+
+with_attr_stmt: subject [_OPEN_ATTR attr_stmt_inline _CLOSE_ATTR]
+?attr_stmt_inline: attr_stmt
+                 | multiple_attr
+attr_stmt: attr [_COMMA attr_stmt]
+multiple_attr: attr_stmt _SEP [attr_stmt_inline]
+attr: ID _ATTR value
+
+?subject: node_stmt
+        | edge_stmt
+
+?node_stmt: [_NODE] node_id_list
+node_id_list: node_id [_COMMA node_id_list]
+node_id: ID
+
+edge_stmt: node_id_list edge_rhs
+edge_rhs: edge_op node_id_list [edge_rhs]
+?edge_op: dedge
+        | uedge
+
+dedge: "->"
+uedge: "--"
+
+
+start_stmt: _START node_id
+
+graph_stmt: _GRAPH node_id _OPEN_BLOCK stmt_list _CLOSE_BLOCK
+
+only_attr_stmt: only_attr_type ID _OPEN_BLOCK attr_stmt_line _CLOSE_BLOCK
+attr_stmt_line: [attr_stmt _SEP attr_stmt_line]
+only_attr_type: _MODEL  -> model
+              | _PROMPT -> prompt
+
+?value: NUMBER
+     | string
+     | ID             -> reference
+     | list 
+     | tuple
+     | dict
+
+string: ESCAPED_STRING
+list: _OPEN_ATTR [value (_COMMA value)*] _CLOSE_ATTR
+tuple: _OPEN_TUP value (_COMMA value)* _CLOSE_TUP
+dict: _OPEN_BLOCK key_value (_COMMA key_value)* _CLOSE_BLOCK
+?key_value: string ":" value 
+
+_START: "start"
+_NODE: "node"
+_GRAPH: "graph"
+_PROMPT: "prompt"
+_MODEL: "model"
+_ATTR: "="
+_SEP: ";"
+_COMMA: ","
+_OPEN_ATTR: "["
+_CLOSE_ATTR: "]"
+_OPEN_BLOCK: "{"
+_CLOSE_BLOCK: "}"
+_OPEN_TUP: "("
+_CLOSE_TUP: ")"
+ID: CNAME
+
+%import common.CNAME
+%import common.NUMBER
+%import common.ESCAPED_STRING
+%import common.WS
+%import common.SH_COMMENT
+%ignore WS
+%ignore SH_COMMENT

@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+graphlang/graphlang.egg-info/PKG-INFO
+graphlang/graphlang.egg-info/SOURCES.txt
+graphlang/graphlang.egg-info/dependency_links.txt
+graphlang/graphlang.egg-info/requires.txt
+graphlang/graphlang.egg-info/top_level.txt

@@ -1,0 +1,18 @@
+prompt MeuPrompt {
+    messages=[
+        ("system", "you are a healpful AI named Hue"),
+        ("placeholder", "{messages}")
+    ];
+    input_variables=["messages"];
+}
+
+checkpointer=memory_checkpointer;
+
+model llama3_1 {
+    model="llama3.1";
+}
+
+node Manager[state_modifier=MeuPrompt, model=llama3_1, tools=[]];
+
+start Manager;
+

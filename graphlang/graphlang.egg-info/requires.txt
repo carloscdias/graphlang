@@ -1,0 +1,5 @@
+langgraph>=0.2.14
+
+[dev]
+lark>=1.2.2
+langchain-ollama>=0.1.1

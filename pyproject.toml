@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "graphlang"
+version = "0.0.1"
+description = "A DSL for defining LLM agent graphs with dotlang-inspired syntax"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Carlos Dias", email = "carlosdias.dev@gmail.com"}]
+dependencies = [
+    "langgraph>=0.2.14",
+]
+requires-python = ">=3.8"
+keywords = ["AI", "graph", "dotlang", "LLM", "language model"]
+
+[project.optional-dependencies]
+dev = [
+    "lark>=1.2.2",
+    "langchain-ollama>=0.1.1",
+]
+
+[project.urls]
+homepage = "https://github.com/carloscdias/graphlang"
+
