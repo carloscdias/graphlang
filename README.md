@@ -15,32 +15,80 @@ Install the library using `pip`:
 ```bash
 pip install graphlang
 ```
+## Example
 
-## Example Usage
+To compile a `.graph` file into a `langgraph` structure, use:
 
-### Example DSL Graph
+```python
+from graphlang.parser import parse_graph
 
-Here is an example graph defined using the DSL:
-
-```plaintext
-start node1;
-
-node node1, node2;
-node1 -> node2;
-
-graph my_graph {
-    model my_model {
-        attribute = 1;
-    }
-    prompt my_prompt {
-        text = "Enter your message.";
-    }
-}
+graph = parse_graph(graph_file, {
+    'model_class': ChatOllama
+})
 ```
 
-## DSL Syntax
+- The second argument is a **context**, which allows you to expose external variables or objects to be used in the `.graph` file, like `"model_class"` in this case, which defines the ChatModel used in all `model` references, or `"state_class"` for States.
 
-The DSL follows these key rules:
+In case of a quick react interaction you may also use:
+
+```bash
+python -m graphlang <your_graph_file>
+```
+
+## Language Syntax
+
+GraphLang is a domain-specific language inspired by the [DOT language](https://graphviz.org/doc/info/lang.html), designed to define LLM agent graphs. Below is a "Hello World" example demonstrating the basic structure:
+
+### Example:
+
+```dot
+prompt HelloWorldPrompt {
+    messages=[("system", "Hello, World!")];
+}
+
+model simple_model {
+    model="llama2";
+}
+
+node Greeter[state_modifier=HelloWorldPrompt, model=simple_model];
+
+start Greeter;
+```
+
+## Quick Syntax Overview
+
+1. **`prompt` Block**: Defines a prompt with messages and input variables for the agent.
+   ```dot
+   prompt HelloWorldPrompt {
+       messages=[("system", "Hello, World!")];
+   }
+   ```
+
+2. **`model` Block**: Defines the model used by the agent.
+   ```dot
+   model simple_model {
+       model="llama3.1";
+   }
+   ```
+
+3. **`node` Statement**: Defines an agent (node) with a prompt and a model.
+   ```dot
+   node Greeter[state_modifier=HelloWorldPrompt, model=simple_model];
+   ```
+
+4. **`start` Statement**: Specifies the entry point of the graph.
+   ```dot
+   start Greeter;
+   ```
+
+### Reserved Words
+
+- **`start`**: Specifies the initial node to execute.
+- **`node`**: Defines an agent in the graph.
+- **`prompt`**: Defines a prompt template for messages and input variables.
+- **`model`**: Specifies the model used by the agent.
+
+This structure, based on the DOT language, simplifies the process of defining and executing agent graphs for LLMs.
 
 ## Development
 
@@ -48,12 +96,6 @@ For development, install the necessary dependencies:
 
 ```bash
 pip install graphlang[dev]
-```
-
-Run tests with:
-
-```bash
-pytest
 ```
 
 ## License
