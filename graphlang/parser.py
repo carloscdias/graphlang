@@ -12,6 +12,7 @@ from graphlang.graph_parser import Lark_StandAlone, Transformer, v_args
 DEFAULT_GRAPH_CONTEXT = {
     'ToolNode':  ToolNode,
     'tools_condition': tools_condition,
+    'tools': [],
 }
 
 inline_args = v_args(inline=True)

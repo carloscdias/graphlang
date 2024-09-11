@@ -27,7 +27,7 @@ graph = parse_graph(graph_file, {
 })
 ```
 
-- The second argument is a **context**, which allows you to expose external variables or objects to be used in the `.graph` file, like `"model_class"` in this case, which defines the ChatModel used in all `model` references, or `"state_class"` for States.
+- The second argument is a **context**, which allows you to expose external variables or objects to be used in the `.graph` file, like `"model_class"` in this case, which defines the ChatModel used in all `model` references, or `"state_class"` for States and `"node_class"` for nodes.
 
 In case of a quick react interaction you may also use:
 
@@ -43,11 +43,15 @@ GraphLang is a domain-specific language inspired by the [DOT language](https://g
 
 ```dot
 prompt HelloWorldPrompt {
-    messages=[("system", "Hello, World!")];
+    messages=[
+        ("system", "For all messages, reply with \"Hello, World!\""),
+        ("placeholder", "{messages}")
+    ];
 }
 
 model simple_model {
-    model="llama2";
+    model="llama3.1";
+    temperature=0;
 }
 
 node Greeter[state_modifier=HelloWorldPrompt, model=simple_model];
@@ -59,15 +63,19 @@ start Greeter;
 
 1. **`prompt` Block**: Defines a prompt with messages and input variables for the agent.
    ```dot
-   prompt HelloWorldPrompt {
-       messages=[("system", "Hello, World!")];
-   }
+    prompt HelloWorldPrompt {
+        messages=[
+            ("system", "For all messages, reply with \"Hello, World!\""),
+            ("placeholder", "{messages}")
+        ];
+    }
    ```
 
 2. **`model` Block**: Defines the model used by the agent.
    ```dot
    model simple_model {
        model="llama3.1";
+       temperature=0;
    }
    ```
 
@@ -80,6 +88,8 @@ start Greeter;
    ```dot
    start Greeter;
    ```
+
+For more examples take a look at the [examples](examples) directory.
 
 ### Reserved Words
 

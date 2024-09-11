@@ -1,0 +1,15 @@
+prompt HelloWorldPrompt {
+    messages=[
+        ("system", "For all messages, reply with \"Hello, World!\""),
+        ("placeholder", "{messages}")
+    ];
+}
+
+model simple_model {
+    model="llama3.1";
+    temperature=0;
+}
+
+node Greeter[state_modifier=HelloWorldPrompt, model=simple_model];
+
+start Greeter;
